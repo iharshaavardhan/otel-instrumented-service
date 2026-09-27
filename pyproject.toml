@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "otel-instrumented-service"
+version = "0.1.0"
+description = "A sample HTTP service instrumented with OpenTelemetry traces, Prometheus RED metrics, and structured JSON logs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "flask>=3.0",
+    "prometheus-client>=0.20",
+    "opentelemetry-api>=1.25",
+    "opentelemetry-sdk>=1.25",
+]
+
+[project.optional-dependencies]
+otlp = ["opentelemetry-exporter-otlp-proto-http>=1.25"]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+otel-service = "otel_service.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "PL", "S"]
+ignore = ["PLR2004", "S101"]
